@@ -43,7 +43,8 @@ api.get('/test/get', function(req, res) {
 // postRequest
 
 api.post('/test/post', bodyParser.urlencoded({extended: false}), function(req, res) {
-    req.body.should.have.property('key').equal(config.apiKey);
+  console.log(req);
+    req.query.should.have.property('key').equal(config.apiKey);
     req.query.should.have.property('json');
     res.send();
 });
@@ -83,6 +84,23 @@ var sendZip = 'yaml';
 api.get('/test/download/all.zip', function(req, res) {
     fs.createReadStream(__dirname + '/' + sendZip + '.zip')
     .pipe(res);
+});
+
+// upload
+api.post('/test/upload-translation', function(req, res) {
+    res.send({
+        success: {
+            stats: [
+                {
+                    name: 'about.json',
+                    status: 'uploaded'
+                }, {
+                    name: 'yaml.zip',
+                    status: 'not_allowed'
+                }
+            ]
+        }
+    });
 });
 
 // Start server
@@ -339,5 +357,15 @@ describe('#downloadToObject', function() {
             done();
         })
         .catch(done);
+    });
+});
+
+describe('#upload', function() {
+    it('should call the `upload-translation` API endpoint', function(done) {
+        crowdin.upload(['about.json', 'yaml.zip'], 'es-ES')
+            .then(function() {
+                done();
+            })
+            .catch(done);
     });
 });

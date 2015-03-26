@@ -65,6 +65,9 @@ See the [node-unzip documentation](https://github.com/EvanOxfeld/node-unzip#pars
 ### .downloadToObject()
 Downloads, extracts and converts the translations ZIP to a JS object. Returns a Promise.
 
+### .upload(Array files)
+Upload existing translations
+
 ## Tests
 
 Tests are written with [mocha](http://visionmedia.github.io/mocha/)
